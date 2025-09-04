@@ -614,18 +614,33 @@
     c.appendChild(el); setTimeout(()=> el.remove(), t);
   };
 
-  // confetti once per session
-  function launchConfettiOnce(){
-    if (sessionStorage.getItem('confettiShown_v2')) return;
-    sessionStorage.setItem('confettiShown_v2','1');
-    const duration = 3500;
-    const end = Date.now() + duration;
-    (function frame(){
-      confetti({ particleCount: 28, angle: 60, spread: 60, origin: { x: 0.5, y: 0.12 }, gravity: 0.8 });
-      confetti({ particleCount: 28, angle: 120, spread: 60, origin: { x: 0.5, y: 0.12 }, gravity: 0.8 });
-      if (Date.now() < end) requestAnimationFrame(frame);
-    })();
-  }
+ // confetti once per session
+function launchConfettiOnce(){
+  if (sessionStorage.getItem('confettiShown_v2')) return;
+  sessionStorage.setItem('confettiShown_v2','1');
+
+  const duration = 1500; // was 3500
+  const end = Date.now() + duration;
+
+  (function frame(){
+    confetti({
+      particleCount: 20,       // fewer particles
+      angle: 60,
+      spread: 55,
+      origin: { x: 0.5, y: 0.15 },
+      gravity: 1.2             // falls faster
+    });
+    confetti({
+      particleCount: 20,
+      angle: 120,
+      spread: 55,
+      origin: { x: 0.5, y: 0.15 },
+      gravity: 1.2
+    });
+    if (Date.now() < end) requestAnimationFrame(frame);
+  })();
+}
+
 
   // pill click behavior (toggle active class)
   function wirePills(){
@@ -860,6 +875,7 @@
 </script>
 </body>
 </html>
+
 
 
 
