@@ -599,7 +599,7 @@
   <!-- confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
-  <script>
+ <script>
   // ---------- CONFIG ----------
   const WEBHOOK_URL = 'https://hook.us2.make.com/t6klvz5sg4pq12hysqs7xbbdhhtz5rxt';
   const TOTAL_STEPS = 8;
@@ -632,9 +632,7 @@
     document.querySelectorAll('.pill').forEach(p => {
       const input = p.querySelector('input');
       p.addEventListener('click', (e)=>{
-        // set checked
         if (input) input.checked = true;
-        // toggle UI active for sibling pills with same name
         const name = input?.name;
         if (name){
           document.querySelectorAll('.pill input[name="'+name+'"]').forEach(i=>{
@@ -656,13 +654,10 @@
         if (inp.type === 'checkbox') {
           inp.checked = !inp.checked;
         } else if (inp.type === 'radio') {
-          // uncheck same-name radios
           const name = inp.name;
           document.querySelectorAll('input[type="radio"][name="'+name+'"]').forEach(r=> r.checked = false);
           inp.checked = true;
         }
-        // small UI feedback: for pill style (if option inside pill)
-        // no extra classes needed; native checked state is enough visually
       });
     });
   }
@@ -699,10 +694,8 @@
       progressPercent.textContent = `${pct}%`;
       stepCurrent.textContent = index+1;
       statusMsg.textContent = '';
-      // focus first input
       const f = steps[index].querySelector('input, textarea, select');
       if (f) f.focus({preventScroll:true});
-      // refresh pill active states (visual)
       document.querySelectorAll('.pill input').forEach(i=>{
         i.closest('.pill').classList.toggle('active', i.checked);
       });
@@ -718,7 +711,6 @@
         return;
       }
 
-      // final submit
       const name = form.querySelector('[name="name"]')?.value?.trim() || '';
       const email = form.querySelector('[name="email"]')?.value?.trim() || '';
       if (!name || !validateEmail(email)){
@@ -744,7 +736,6 @@
           onSuccess(false);
           return;
         }
-        // fallback no-cors:
         const res3 = await submitNoCors(WEBHOOK_URL, payload);
         if (res3){
           onSuccess(true);
@@ -770,7 +761,6 @@
       resetFormAndState();
     });
 
-    // prevent Enter from submitting accidentally (except textarea)
     form.addEventListener('keydown', e=>{
       if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') e.preventDefault();
     });
@@ -780,15 +770,23 @@
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
     }
 
+    // ✅ revised: merge multiple values into comma-separated strings
     function gatherFormObject(formEl){
       const fd = new FormData(formEl);
       const obj = {};
       for (const [k,v] of fd.entries()){
         if (obj.hasOwnProperty(k)){
-          if (Array.isArray(obj[k])) obj[k].push(v);
-          else obj[k] = [obj[k], v];
-        } else obj[k] = v;
+          obj[k] = Array.isArray(obj[k]) ? [...obj[k], v] : [obj[k], v];
+        } else {
+          obj[k] = v;
+        }
       }
+      // convert arrays → comma-separated strings
+      Object.keys(obj).forEach(key=>{
+        if (Array.isArray(obj[key])) {
+          obj[key] = obj[key].join(', ');
+        }
+      });
       obj.source = 'healthcare-courier-assessment';
       obj.timestamp = new Date().toISOString();
       return obj;
@@ -809,8 +807,7 @@
       try{
         const params = new URLSearchParams();
         Object.entries(data).forEach(([k,v])=>{
-          if (Array.isArray(v)) v.forEach(item=> params.append(k, item));
-          else if (v !== undefined && v !== null) params.append(k, String(v));
+          if (v !== undefined && v !== null) params.append(k, String(v));
         });
         return await fetch(url, {
           method:'POST',
@@ -837,9 +834,7 @@
       nextBtn.disabled = false;
       nextBtn.textContent = 'Submitted';
       $('#statusMsg').textContent = 'Submitted';
-      // reset form
       resetFormAndState();
-      // show overlay
       $('#successDetail').textContent = noCorsFallback
         ? 'We sent your responses using a best-effort fallback. If you don’t get a confirmation, please contact support.'
         : 'We received your assessment and will follow up within 1 business day.';
@@ -850,26 +845,23 @@
 
     function resetFormAndState(){
       form.reset();
-      // clear check visuals
       document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-      // go back to step 1
       showStep(0);
-      // clear any status text
       $('#statusMsg').textContent = '';
     }
 
-    // Initialize pill active visuals for any checked radios (if form reset from browser)
     $$('.pill input').forEach(inp=>{
       if (inp.checked) inp.closest('.pill')?.classList.add('active');
     });
 
   }); // DOMContentLoaded
 
-  // small console safety - do not log PII
-  (function guardConsole(){ const o = console.log; console.log = function(){}; /* restore in dev if needed by uncommenting: console.log = o; */ })();
-  </script>
+  (function guardConsole(){ const o = console.log; console.log = function(){}; })();
+</script>
+
 </body>
 </html>
+
 
 
 
