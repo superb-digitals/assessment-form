@@ -157,6 +157,38 @@
     .overlay{ padding:16px }
     .footer{ flex-direction:column; gap:10px; align-items:stretch }
   }
+
+  /* Align Previous left & Next right */
+.buttons {
+  display: flex;
+  justify-content: space-between; /* pushes prev left & next right */
+  margin-top: 25px;
+  width: 100%;
+}
+
+.buttons button {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.buttons button:hover {
+  transform: translateY(-2px);
+}
+
+.buttons .prev {
+  background: #ccc;
+  color: #333;
+}
+
+.buttons .next {
+  background: #0b8c99;
+  color: #fff;
+}
+
 </style>
 </head>
 <body>
@@ -797,3 +829,4 @@
   </script>
 </body>
 </html>
+
