@@ -1,426 +1,800 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Assessment Form</title>
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-dark: #1e40af;
-      --bg: #f9fafb;
-      --text: #111827;
-      --radius: 10px;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Healthcare Courier Assessment</title>
+<style>
+  /* ---------------- CONFIG ----------------
+     To change webhook edit WEBHOOK_URL in the JS.
+     Brand color variable: --brand
+     -----------------------------------------*/
+  :root{
+    --brand: #0b8c99;
+    --brand-dark: #066a6f;
+    --bg: #f6f8f9;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --text: #0f172a;
+    --radius:12px;
+    --gap:12px;
+    box-sizing: border-box;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-size: 16px;
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:28px;
+    min-height:100vh;
+  }
 
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Roboto, sans-serif;
-      font-size: 18px;
-      line-height: 1.6;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      justify-content: center;
-      padding: 1rem;
-    }
+  .wrapper{
+    width:100%;
+    max-width:920px;
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:0 10px 30px rgba(2,6,23,0.06);
+    overflow:hidden;
+    border:1px solid rgba(2,6,23,0.04);
+  }
 
-    .container {
-      max-width: 850px;
-      width: 100%;
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
+  header.top {
+    padding:22px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    background:linear-gradient(180deg, rgba(11,140,153,0.03), rgba(255,255,255,0));
+  }
+  .title-block{flex:1}
+  h1{margin:0;font-size:20px;line-height:1.1}
+  .sub{margin:6px 0 0;color:var(--muted);font-size:14px}
 
-    header {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-    header p {
-      margin-top: .5rem;
-      color: #4b5563;
-      font-size: 1.125rem;
-    }
+  .step-counter{
+    display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);
+  }
+  .step-counter strong{color:var(--text)}
 
-    .progress {
-      height: 6px;
-      background: #e5e7eb;
-      margin: 0 1rem;
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
+  .content{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:0;
+  }
 
-    form {
-      padding: 1.5rem;
-    }
+  .main{
+    padding:20px 24px 90px;
+  }
 
-    .step {
-      display: none;
-      animation: fadeIn .3s ease;
-    }
-    .step.active {
-      display: block;
-    }
+  .progress-row{
+    display:flex;align-items:center;gap:12px;margin-bottom:18px;
+    justify-content:space-between;
+  }
+  .progress-bar-wrap{flex:1;margin-right:12px;height:10px;background:#eef2f4;border-radius:999px;overflow:hidden}
+  .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--brand),var(--brand-dark));transition:width .32s cubic-bezier(.22,.9,.27,1)}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  form{width:100%}
 
-    h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+  .step{
+    display:none;
+    animation:fadeIn .28s cubic-bezier(.22,.9,.27,1) both;
+  }
+  .step.active{display:block}
 
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: .3rem;
-      font-size: 1rem;
-    }
+  @keyframes fadeIn{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
 
-    input, textarea, select {
-      width: 100%;
-      padding: .9rem;
-      margin-bottom: 1rem;
-      border: 1px solid #d1d5db;
-      border-radius: var(--radius);
-      font-size: 1rem;
-    }
-    textarea { min-height: 100px; resize: vertical; }
+  h2 {font-size:18px;margin:0 0 10px}
 
-    .checkbox-group,
-    .radio-group {
-      margin-bottom: 1rem;
-    }
+  .field{margin-bottom:14px}
+  label.field-label{display:block;font-weight:600;margin-bottom:8px;font-size:15px}
+  .hint{font-size:13px;color:var(--muted);margin-top:6px}
 
-    .checkbox-group label,
-    .radio-group label {
-      font-weight: normal;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      margin-bottom: .5rem;
-      font-size: 1rem;
-    }
+  input[type="text"], input[type="email"], input[type="number"], textarea, select{
+    width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(2,6,23,0.06);
+    background:linear-gradient(180deg,#fff,#fbfdff); font-size:15px; color:var(--text);
+    outline:none; transition:box-shadow .12s ease, transform .08s ease;
+  }
+  textarea { min-height:110px; resize:vertical }
+  input:focus, textarea:focus, select:focus{
+    box-shadow:0 8px 20px rgba(11,140,153,0.08); transform:translateY(-1px); border-color: rgba(11,140,153,0.18)
+  }
 
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1rem 0;
-      position: sticky;
-      bottom: 0;
-      background: white;
-    }
+  /* Options (checkboxes / radios) */
+  .options{display:flex;flex-wrap:wrap;gap:10px}
+  .option{
+    display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:10px;border:1px solid rgba(2,6,23,0.06);
+    background:linear-gradient(180deg,#fff,#fcfeff);cursor:pointer;user-select:none;font-size:15px;
+  }
+  .option input{margin:0;width:18px;height:18px;flex:0 0 18px}
+  .option span{display:inline-block}
 
-    button {
-      flex: 1;
-      padding: .9rem;
-      border: none;
-      border-radius: var(--radius);
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background .2s;
-    }
-    .btn-prev { background: #e5e7eb; }
-    .btn-next { background: var(--primary); color: white; }
-    .btn-next:hover { background: var(--primary-dark); }
+  /* Toggle (Yes/No) styled as pill buttons */
+  .toggle-group{display:flex;gap:8px;flex-wrap:wrap}
+  .toggle{
+    display:inline-flex;align-items:center;cursor:pointer;
+  }
+  .toggle input{display:none}
+  .toggle .pill{
+    padding:8px 14px;border-radius:999px;border:1px solid rgba(2,6,23,0.06);font-size:15px;background:transparent;
+  }
+  .toggle input:checked + .pill{
+    background:var(--brand); color:#fff; border-color:var(--brand);
+  }
 
-    .success {
-      display: none;
-      text-align: center;
-      padding: 2rem;
-    }
-    .success.active { display: block; }
-    .success h2 { color: var(--primary); }
+  /* actions sticky footer */
+  .footer-actions{
+    position:sticky; bottom:0; background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,1));
+    display:flex;gap:12px;padding:14px 18px;border-top:1px solid rgba(2,6,23,0.03); align-items:center; justify-content:space-between;
+  }
+  .actions-left{display:flex;gap:12px;align-items:center}
+  button.btn{
+    border:0;padding:10px 14px;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;
+  }
+  button.ghost{background:transparent;border:1px solid rgba(2,6,23,0.06);color:var(--brand)}
+  button.primary{background:var(--brand);color:#fff;box-shadow:0 8px 22px rgba(11,140,153,0.08)}
+  button[disabled]{opacity:.6;cursor:not-allowed}
 
-    @media(max-width:600px){
-      body { font-size: 16px; }
-      header h1 { font-size: 1.5rem; }
-      .actions { flex-direction: column; }
-      button { width: 100%; }
-    }
-  </style>
+  .small-muted{font-size:13px;color:var(--muted)}
+
+  /* toasts */
+  .toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:9999}
+  .toast{background:var(--brand);color:#fff;padding:10px 14px;border-radius:8px;box-shadow:0 6px 18px rgba(2,6,23,0.12)}
+
+  /* success overlay */
+  .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);z-index:9998}
+  .overlay.active{display:flex}
+  .success-card{background:var(--card);padding:28px;border-radius:14px;text-align:center;max-width:720px;width:90%}
+  .success-card h3{margin:0 0 8px}
+  .success-card p{color:var(--muted);margin:0 0 18px}
+
+  /* responsive tweaks */
+  @media (max-width:880px){
+    .wrapper{margin:0 6px}
+    .footer-actions{flex-direction:column;align-items:stretch;gap:10px;padding:12px}
+    .actions-left{width:100%;display:flex;justify-content:space-between;align-items:center}
+    .small-muted{font-size:12px}
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🎉 Thanks for booking an appointment</h1>
-      <p>Please complete this short assessment. Name & email are required.</p>
+  <div class="wrapper" role="application" aria-labelledby="form-title">
+    <header class="top">
+      <div class="title-block">
+        <h1 id="form-title">Thanks for booking an appointment with me</h1>
+        <div class="sub">We’ll tailor your logistics solution in a few clicks. Only <strong>Name</strong> and <strong>Email</strong> are required.</div>
+      </div>
+
+      <div class="step-counter" aria-hidden="true">
+        <div class="small-muted" id="stepText">Step <strong id="stepCurrent">1</strong> of <strong id="stepTotal">8</strong></div>
+      </div>
     </header>
 
-    <div class="progress"><div class="progress-bar"></div></div>
+    <div class="content">
+      <main class="main">
+        <div class="progress-row" aria-hidden="true">
+          <div class="progress-bar-wrap" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+          <div class="small-muted" id="progressPercent">0%</div>
+        </div>
 
-    <form id="assessmentForm">
-      <!-- Step 1 -->
-      <div class="step active">
-        <h2>1. General Company Profile</h2>
-        <label>Name *</label>
-        <input type="text" name="name" required />
-        <label>Email *</label>
-        <input type="email" name="email" required />
-        <label>What type of pharmaceuticals and medical products require delivery?</label>
-        <textarea name="products"></textarea>
-        <label>What is your current delivery process, and challenges?</label>
-        <textarea name="challenges"></textarea>
-        <label>Average delivery volumes</label>
-        <input type="number" name="volumes" placeholder="e.g. 500 per month"/>
-      </div>
+        <form id="assessmentForm" autocomplete="on" novalidate>
+          <!-- STEP 1 -->
+          <section class="step active" data-step="1" aria-label="General Company Profile">
+            <h2>1 — General Company Profile</h2>
 
-      <!-- Step 2 -->
-      <div class="step">
-        <h2>2. Service Expectations</h2>
-        <label>Service-level requirements</label>
-        <div class="radio-group">
-          <label><input type="radio" name="sla" value="STAT within 2 hours"/> STAT within 2 hours</label>
-          <label><input type="radio" name="sla" value="Same-day"/> Same-day</label>
-          <label><input type="radio" name="sla" value="Next-day"/> Next-day</label>
-        </div>
-        <label>Do you require scheduled routes, on-demand/STAT, or both?</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="services" value="Scheduled"/> Scheduled Routes</label>
-          <label><input type="checkbox" name="services" value="On-demand"/> On-demand/STAT</label>
-          <label><input type="checkbox" name="services" value="Both"/> Both</label>
-        </div>
-        <label>Geographic Coverage</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="coverage" value="Local"/> Local</label>
-          <label><input type="checkbox" name="coverage" value="Statewide"/> Statewide</label>
-          <label><input type="checkbox" name="coverage" value="Multi-state"/> Multi-state</label>
-        </div>
-        <label>Do you need 24/7/365 availability?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="availability" value="Yes"/> Yes</label>
-          <label><input type="radio" name="availability" value="No"/> No</label>
-        </div>
-      </div>
+            <div class="field">
+              <label class="field-label" for="name">Full name <span class="small-muted">*</span></label>
+              <input id="name" name="name" type="text" placeholder="Jane Doe" required />
+            </div>
 
-      <!-- Step 3 -->
-      <div class="step">
-        <h2>3. Compliance & Regulatory Requirements</h2>
-        <label>Controlled substances (Schedule II–V)?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="controlled" value="Yes"/> Yes</label>
-          <label><input type="radio" name="controlled" value="No"/> No</label>
-        </div>
-        <label>Temperature-sensitive medications?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="tempSensitive" value="Yes"/> Yes</label>
-          <label><input type="radio" name="tempSensitive" value="No"/> No</label>
-        </div>
-        <input type="text" name="tempRange" placeholder="If yes, specify ranges"/>
-        <label>Required Documentation</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="docs" value="HIPAA"/> HIPAA</label>
-          <label><input type="checkbox" name="docs" value="DOT"/> DOT</label>
-          <label><input type="checkbox" name="docs" value="OSHA"/> OSHA</label>
-          <label><input type="checkbox" name="docs" value="DEA"/> DEA chain-of-custody</label>
-        </div>
-        <textarea name="docsOther" placeholder="Other"></textarea>
-        <label>Background checks or clearances?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="clearances" value="Yes"/> Yes</label>
-          <label><input type="radio" name="clearances" value="No"/> No</label>
-        </div>
-      </div>
+            <div class="field">
+              <label class="field-label" for="email">Email <span class="small-muted">*</span></label>
+              <input id="email" name="email" type="email" placeholder="name@company.com" required />
+            </div>
 
-      <!-- Step 4 -->
-      <div class="step">
-        <h2>4. Packaging & Handling</h2>
-        <label>Who provides packaging/labels?</label>
-        <select name="packaging">
-          <option value="">Select one</option>
-          <option>Company provides</option>
-          <option>Courier supplies</option>
-          <option>Both</option>
-        </select>
-        <label>Chain-of-Custody Protocols</label>
-        <textarea name="custody"></textarea>
-        <label>Hazardous or special handling?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="hazardous" value="Yes"/> Yes</label>
-          <label><input type="radio" name="hazardous" value="No"/> No</label>
-        </div>
-        <textarea name="hazardousDetails" placeholder="If yes, explain"></textarea>
-      </div>
+            <div class="field">
+              <label class="field-label" for="products">What type of pharmaceuticals and medical products will require delivery?</label>
+              <textarea id="products" name="products" placeholder="e.g., vaccines, biologics, ancillary supplies"></textarea>
+            </div>
 
-      <!-- Step 5 -->
-      <div class="step">
-        <h2>5. Technology & Tracking</h2>
-        <label>Visibility Required</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="visibility" value="GPS Tracking"/> GPS Tracking</label>
-          <label><input type="checkbox" name="visibility" value="Proof of Delivery"/> Proof of Delivery</label>
-          <label><input type="checkbox" name="visibility" value="Client Portal"/> Client Portal</label>
-        </div>
-        <label>Integration with pharmacy/EHR?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="ehr" value="Yes"/> Yes</label>
-          <label><input type="radio" name="ehr" value="No"/> No</label>
-        </div>
-        <input type="text" name="ehrSystem" placeholder="If yes, specify system"/>
-        <label>Confirmations Required</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="confirmations" value="E-signature"/> E-Signature</label>
-          <label><input type="checkbox" name="confirmations" value="Timestamp"/> Timestamp</label>
-          <label><input type="checkbox" name="confirmations" value="Temperature Logs"/> Temperature Logs</label>
-          <label><input type="checkbox" name="confirmations" value="Photo Verification"/> Photo Verification</label>
-        </div>
-      </div>
+            <div class="field">
+              <label class="field-label" for="process">What is your current delivery process, and what challenges are you facing with your existing courier partner?</label>
+              <textarea id="process" name="process" placeholder="Describe your pickup → delivery flow and pain points"></textarea>
+            </div>
 
-      <!-- Step 6 -->
-      <div class="step">
-        <h2>6. Security & Risk Management</h2>
-        <label>Security Measures</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="security" value="Tamper Seals"/> Tamper-Evident Seals</label>
-          <label><input type="checkbox" name="security" value="Locked Bags"/> Locked Bags</label>
-          <label><input type="checkbox" name="security" value="Vault"/> Secure Vault Storage</label>
-        </div>
-        <label>Insurance requirement (per shipment)</label>
-        <input type="number" name="insurance"/>
-        <label>Incident Handling</label>
-        <textarea name="incidents"></textarea>
-      </div>
+            <div class="field">
+              <label class="field-label" for="volumes">What are average daily/weekly/monthly delivery volumes expected?</label>
+              <input id="volumes" name="volumes" type="number" placeholder="e.g., 25 (per day) or 500 (per month)" />
+              <div class="hint">Enter a typical number (use monthly count if unsure).</div>
+            </div>
+          </section>
 
-      <!-- Step 7 -->
-      <div class="step">
-        <h2>7. Communication & Relationship</h2>
-        <label>Preferred Communication</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="comms" value="Dispatch Line"/> Dispatch Line</label>
-          <label><input type="checkbox" name="comms" value="Email"/> Email</label>
-          <label><input type="checkbox" name="comms" value="Portal Alerts"/> Portal Alerts</label>
-          <label><input type="checkbox" name="comms" value="SMS"/> SMS</label>
-        </div>
-        <label>Dedicated account manager?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="accountManager" value="Yes"/> Yes</label>
-          <label><input type="radio" name="accountManager" value="No"/> No</label>
-        </div>
-        <label>Service Review Frequency</label>
-        <select name="reviews">
-          <option>Weekly</option>
-          <option>Monthly</option>
-          <option>Quarterly</option>
-          <option>Annually</option>
-        </select>
-      </div>
+          <!-- STEP 2 -->
+          <section class="step" data-step="2" aria-label="Service Expectations">
+            <h2>2 — Service Expectations</h2>
 
-      <!-- Step 8 -->
-      <div class="step">
-        <h2>8. Contract & Pricing</h2>
-        <label>Preferred Pricing Model</label>
-        <select name="pricing">
-          <option>Per-trip</option>
-          <option>Per-mile</option>
-          <option>Per-route</option>
-          <option>Flat Monthly</option>
-        </select>
-        <label>Seasonal surges?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="surges" value="Yes"/> Yes</label>
-          <label><input type="radio" name="surges" value="No"/> No</label>
-        </div>
-        <textarea name="surgeDetails" placeholder="If yes, explain"></textarea>
-        <label>Key KPIs</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="kpis" value="On-time"/> On-time %</label>
-          <label><input type="checkbox" name="kpis" value="Temperature"/> Temperature Compliance</label>
-          <label><input type="checkbox" name="kpis" value="Accuracy"/> Accuracy Rate</label>
-        </div>
-      </div>
+            <div class="field">
+              <label class="field-label">What are your service-level requirements?</label>
+              <div class="options" role="radiogroup" aria-label="SLA">
+                <label class="option" aria-checked="false">
+                  <input type="radio" name="sla" value="STAT within 2 hours"/>
+                  <span>STAT within 2 hours</span>
+                </label>
+                <label class="option">
+                  <input type="radio" name="sla" value="Same-day"/>
+                  <span>Same-day</span>
+                </label>
+                <label class="option">
+                  <input type="radio" name="sla" value="Next-day"/>
+                  <span>Next-day</span>
+                </label>
+              </div>
+            </div>
 
-      <div class="actions">
-        <button type="button" class="btn-prev">Previous</button>
-        <button type="button" class="btn-next">Next</button>
-      </div>
-    </form>
+            <div class="field">
+              <label class="field-label">Do you require scheduled routes, on-demand/STAT services, or both?</label>
+              <div class="options" role="group" aria-label="Service types">
+                <label class="option"><input type="checkbox" name="serviceTypes" value="Scheduled routes"/><span>Scheduled routes</span></label>
+                <label class="option"><input type="checkbox" name="serviceTypes" value="On-demand/STAT"/><span>On-demand / STAT</span></label>
+                <label class="option"><input type="checkbox" name="serviceTypes" value="Both"/><span>Both</span></label>
+              </div>
+            </div>
 
-    <div class="success" id="successScreen">
-      <h2>✅ Submitted!</h2>
-      <p>Thanks — your responses were received successfully.</p>
+            <div class="field">
+              <label class="field-label">What geographic coverage do you need?</label>
+              <div class="options" role="group" aria-label="Geographic coverage">
+                <label class="option"><input type="checkbox" name="geography" value="Local"/><span>Local</span></label>
+                <label class="option"><input type="checkbox" name="geography" value="Statewide"/><span>Statewide</span></label>
+                <label class="option"><input type="checkbox" name="geography" value="Multi-state"/><span>Multi-state</span></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Do you need 24/7/365 availability (incl. weekends/holidays)?</label>
+              <div class="toggle-group" role="radiogroup" aria-label="24/7 availability">
+                <label class="toggle"><input type="radio" name="availability247" value="Yes"><span class="pill">Yes</span></label>
+                <label class="toggle"><input type="radio" name="availability247" value="No"><span class="pill">No</span></label>
+              </div>
+            </div>
+          </section>
+
+          <!-- STEP 3 -->
+          <section class="step" data-step="3" aria-label="Compliance & Regulatory">
+            <h2>3 — Compliance & Regulatory Requirements</h2>
+
+            <div class="field">
+              <label class="field-label">Are any deliveries Schedule II–V controlled substances (DEA)?</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Controlled substances">
+                <label class="toggle"><input type="radio" name="controlledSubstances" value="Yes"><span class="pill">Yes</span></label>
+                <label class="toggle"><input type="radio" name="controlledSubstances" value="No"><span class="pill">No</span></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Do your shipments include temperature-sensitive medications?</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Temperature sensitive">
+                <label class="toggle"><input type="radio" name="temperatureSensitive" value="Yes"><span class="pill">Yes</span></label>
+                <label class="toggle"><input type="radio" name="temperatureSensitive" value="No"><span class="pill">No</span></label>
+              </div>
+              <input type="text" name="temperatureRanges" placeholder="If yes, enter ranges (e.g., 2–8°C; -20°C)"/>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Documentation, permits, or compliance checks required?</label>
+              <div class="options" role="group" aria-label="Documentation">
+                <label class="option"><input type="checkbox" name="documentation" value="HIPAA"/><span>HIPAA</span></label>
+                <label class="option"><input type="checkbox" name="documentation" value="DOT"/><span>DOT</span></label>
+                <label class="option"><input type="checkbox" name="documentation" value="OSHA"/><span>OSHA</span></label>
+                <label class="option"><input type="checkbox" name="documentation" value="DEA chain-of-custody"/><span>DEA chain-of-custody</span></label>
+              </div>
+              <textarea name="documentationOther" placeholder="Other documentation / notes (optional)"></textarea>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Do you require background checks, fingerprinting, or special security clearances for couriers?</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Security clearances">
+                <label class="toggle"><input type="radio" name="securityClearances" value="Yes"><span class="pill">Yes</span></label>
+                <label class="toggle"><input type="radio" name="securityClearances" value="No"><span class="pill">No</span></label>
+              </div>
+            </div>
+          </section>
+
+          <!-- STEP 4 -->
+          <section class="step" data-step="4" aria-label="Packaging & Handling">
+            <h2>4 — Packaging & Handling</h2>
+
+            <div class="field">
+              <label class="field-label">Do you provide packaging/labels, or should the courier supply these?</label>
+              <select name="packagingSource">
+                <option value="">(choose)</option>
+                <option>Company provides</option>
+                <option>Courier supplies</option>
+                <option>Both</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Are there chain-of-custody protocols to follow at pickup and delivery?</label>
+              <textarea name="chainOfCustody" placeholder="Describe chain of custody steps (optional)"></textarea>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Do deliveries involve hazardous materials or specialty handling?</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Hazardous handling">
+                <label class="toggle"><input type="radio" name="specialHandling" value="Yes"><span class="pill">Yes</span></label>
+                <label class="toggle"><input type="radio" name="specialHandling" value="No"><span class="pill">No</span></label>
+              </div>
+              <textarea name="specialHandlingDetails" placeholder="If yes, explain (optional)"></textarea>
+            </div>
+          </section>
+
+          <!-- STEP 5 -->
+          <section class="step" data-step="5" aria-label="Technology & Tracking">
+            <h2>5 — Technology & Tracking</h2>
+
+            <div class="field">
+              <label class="field-label">What level of visibility do you require?</label>
+              <div class="options" role="group" aria-label="Visibility">
+                <label class="option"><input type="checkbox" name="visibility" value="GPS tracking"/><span>GPS tracking</span></label>
+                <label class="option"><input type="checkbox" name="visibility" value="Proof of Delivery"/><span>Proof of Delivery</span></label>
+                <label class="option"><input type="checkbox" name="visibility" value="Client portal"/><span>Client portal</span></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Do you require integration with your pharmacy management or EHR system?</label>
+              <div class="toggle-group" role="radiogroup" aria-label="EHR integration">
+                <label class="toggle"><input type="radio" name="ehrIntegration" value="Yes"><span class="pill">Yes</span></label>
+                <label class="toggle"><input type="radio" name="ehrIntegration" value="No"><span class="pill">No</span></label>
+              </div>
+              <input type="text" name="ehrSystem" placeholder="If yes, specify system (optional)"/>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Should confirmations include e-signatures, timestamps, temperature logs, or photo verification?</label>
+              <div class="options" role="group" aria-label="Confirmations">
+                <label class="option"><input type="checkbox" name="confirmations" value="E-signatures"/><span>E-signatures</span></label>
+                <label class="option"><input type="checkbox" name="confirmations" value="Timestamps"/><span>Timestamps</span></label>
+                <label class="option"><input type="checkbox" name="confirmations" value="Temperature logs"/><span>Temperature logs</span></label>
+                <label class="option"><input type="checkbox" name="confirmations" value="Photo verification"/><span>Photo verification</span></label>
+              </div>
+            </div>
+          </section>
+
+          <!-- STEP 6 -->
+          <section class="step" data-step="6" aria-label="Security & Risk Management">
+            <h2>6 — Security & Risk Management</h2>
+
+            <div class="field">
+              <label class="field-label">Do you require tamper-evident seals, locked bags, or secure vault storage during transport?</label>
+              <div class="options" role="group" aria-label="Security materials">
+                <label class="option"><input type="checkbox" name="securityMaterials" value="Tamper-evident seals"/><span>Tamper-evident seals</span></label>
+                <label class="option"><input type="checkbox" name="securityMaterials" value="Locked bags"/><span>Locked bags</span></label>
+                <label class="option"><input type="checkbox" name="securityMaterials" value="Secure vault storage"/><span>Secure vault storage</span></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">What is your insurance requirement for cargo (per shipment value)?</label>
+              <input type="number" name="insuranceRequirement" placeholder="Enter numeric value (e.g., 50000)"/>
+            </div>
+
+            <div class="field">
+              <label class="field-label">How should incidents (delays, damages, lost packages) be handled and reported?</label>
+              <textarea name="incidentHandling" placeholder="Describe incident procedures (optional)"></textarea>
+            </div>
+          </section>
+
+          <!-- STEP 7 -->
+          <section class="step" data-step="7" aria-label="Communication & Relationship">
+            <h2>7 — Communication & Relationship</h2>
+
+            <div class="field">
+              <label class="field-label">What is your preferred method of communication?</label>
+              <div class="options" role="group" aria-label="Preferred communication">
+                <label class="option"><input type="checkbox" name="preferredCommunication" value="Dispatch line"/><span>Dispatch line</span></label>
+                <label class="option"><input type="checkbox" name="preferredCommunication" value="Email"/><span>Email</span></label>
+                <label class="option"><input type="checkbox" name="preferredCommunication" value="Portal alerts"/><span>Portal alerts</span></label>
+                <label class="option"><input type="checkbox" name="preferredCommunication" value="SMS"/><span>SMS</span></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Do you require a dedicated account manager or direct contact with dispatch?</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Dedicated account manager">
+                <label class="toggle"><input type="radio" name="dedicatedManager" value="Yes"><span class="pill">Yes</span></label>
+                <label class="toggle"><input type="radio" name="dedicatedManager" value="No"><span class="pill">No</span></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">How frequently would you like service reviews, performance reports, or audits?</label>
+              <select name="reviewFrequency">
+                <option value="">(choose)</option>
+                <option>Weekly</option>
+                <option>Monthly</option>
+                <option>Quarterly</option>
+                <option>Annually</option>
+              </select>
+            </div>
+          </section>
+
+          <!-- STEP 8 -->
+          <section class="step" data-step="8" aria-label="Contract & Pricing">
+            <h2>8 — Contract & Pricing</h2>
+
+            <div class="field">
+              <label class="field-label">Do you prefer per-trip, per-mile, per-route, or flat monthly contract pricing?</label>
+              <select name="pricingModel">
+                <option value="">(choose)</option>
+                <option>Per-trip</option>
+                <option>Per-mile</option>
+                <option>Per-route</option>
+                <option>Flat monthly</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Will there be seasonal fluctuations or surge delivery periods to prepare for?</label>
+              <div class="toggle-group" role="radiogroup" aria-label="Seasonal surge">
+                <label class="toggle"><input type="radio" name="seasonalSurge" value="Yes"><span class="pill">Yes</span></label>
+                <label class="toggle"><input type="radio" name="seasonalSurge" value="No"><span class="pill">No</span></label>
+              </div>
+              <textarea name="seasonalSurgeDetails" placeholder="If yes, explain (optional)"></textarea>
+            </div>
+
+            <div class="field">
+              <label class="field-label">What KPIs matter most?</label>
+              <div class="options" role="group" aria-label="KPIs">
+                <label class="option"><input type="checkbox" name="kpis" value="On-time %"/><span>On-time %</span></label>
+                <label class="option"><input type="checkbox" name="kpis" value="Temperature compliance"/><span>Temperature compliance</span></label>
+                <label class="option"><input type="checkbox" name="kpis" value="Accuracy rate"/><span>Accuracy rate</span></label>
+              </div>
+            </div>
+          </section>
+
+          <!-- sticky footer / actions -->
+          <div class="footer-actions" role="region" aria-label="Form navigation">
+            <div class="actions-left">
+              <button type="button" class="btn ghost" id="prevBtn" aria-label="Previous">Previous</button>
+              <div class="small-muted" style="margin-left:8px" id="saveHint">All fields optional except name & email</div>
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center">
+              <div class="small-muted" id="statusMsg" aria-live="polite" style="min-width:160px;text-align:right"></div>
+              <button type="button" class="btn primary" id="nextBtn" aria-label="Next">Next</button>
+            </div>
+          </div>
+        </form>
+      </main>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- toasts and overlay -->
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="success-card" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+      <div style="font-size:36px">✅</div>
+      <h3 id="successTitle">Thanks — appointment confirmed!</h3>
+      <p id="successDetail">We received your assessment and will follow up soon.</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:14px">
+        <button id="overlayClose" class="btn ghost">Close</button>
+        <button id="overlayRestart" class="btn primary">Start again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
   <script>
-    // Confetti on load
-    (function launchConfetti(){
-      var end = Date.now() + 3*1000;
-      (function frame() {
-        confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
-        confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
-        if(Date.now() < end) requestAnimationFrame(frame);
-      })();
+  // ------------- CONFIG -------------
+  const WEBHOOK_URL = 'https://hook.us2.make.com/t6klvz5sg4pq12hysqs7xbbdhhtz5rxt';
+  const TOTAL_STEPS = 8;
+  // ----------------------------------
+
+  // helpers
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+  const showToast = (txt, timeout=4000) => {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = txt;
+    document.getElementById('toasts').appendChild(t);
+    setTimeout(()=> t.remove(), timeout);
+  };
+
+  // confetti once per session
+  function launchConfettiOnce(){
+    if (sessionStorage.getItem('confettiShown')) return;
+    sessionStorage.setItem('confettiShown','1');
+    const duration = 3300;
+    const end = Date.now() + duration;
+    (function frame(){
+      confetti({
+        particleCount: 28,
+        angle: 60,
+        spread: 60,
+        origin: { x: 0.5, y: 0.1 },
+        gravity: 0.8
+      });
+      confetti({
+        particleCount: 28,
+        angle: 120,
+        spread: 60,
+        origin: { x: 0.5, y: 0.1 },
+        gravity: 0.8
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
     })();
+  }
 
-    const steps = document.querySelectorAll(".step");
-    const nextBtn = document.querySelector(".btn-next");
-    const prevBtn = document.querySelector(".btn-prev");
-    const progressBar = document.querySelector(".progress-bar");
-    const form = document.getElementById("assessmentForm");
-    const successScreen = document.getElementById("successScreen");
+  // form logic
+  document.addEventListener('DOMContentLoaded', ()=>{
+    launchConfettiOnce();
 
-    let currentStep = 0;
-    updateUI();
+    const steps = $$('.step');
+    const prevBtn = $('#prevBtn');
+    const nextBtn = $('#nextBtn');
+    const progressBar = $('#progressBar');
+    const progressPercent = $('#progressPercent');
+    const stepCurrent = $('#stepCurrent');
+    const stepTotal = $('#stepTotal');
+    const statusMsg = $('#statusMsg');
+    const overlay = $('#overlay');
+    const overlayClose = $('#overlayClose');
+    const overlayRestart = $('#overlayRestart');
+    const form = $('#assessmentForm');
 
-    nextBtn.addEventListener("click", () => {
-      if (currentStep < steps.length - 1) {
-        currentStep++;
-        updateUI();
-      } else {
-        handleSubmit();
-      }
-    });
+    let index = 0;
+    stepTotal.textContent = TOTAL_STEPS;
 
-    prevBtn.addEventListener("click", () => {
-      if (currentStep > 0) {
-        currentStep--;
-        updateUI();
-      }
-    });
-
-    function updateUI(){
-      steps.forEach((step,i)=> step.classList.toggle("active", i===currentStep));
-      prevBtn.style.display = currentStep===0 ? "none":"block";
-      nextBtn.textContent = currentStep===steps.length-1 ? "Submit":"Next";
-      progressBar.style.width = ((currentStep+1)/steps.length)*100 + "%";
+    function showStep(i){
+      index = Math.max(0, Math.min(TOTAL_STEPS-1, i));
+      steps.forEach((s, idx)=> s.classList.toggle('active', idx === index));
+      prevBtn.style.display = index === 0 ? 'none' : 'inline-flex';
+      nextBtn.textContent = index === (TOTAL_STEPS-1) ? 'Submit' : 'Next';
+      const pct = Math.round(((index+1)/TOTAL_STEPS)*100);
+      progressBar.style.width = `${pct}%`;
+      progressPercent.textContent = `${pct}%`;
+      stepCurrent.textContent = index+1;
+      statusMsg.textContent = '';
+      // bring first input into view/focus for accessibility
+      const first = steps[index].querySelector('input, textarea, select');
+      if (first) first.focus({preventScroll:true});
     }
 
-    function handleSubmit(){
-      const formData = new FormData(form);
-      const data = {};
-      formData.forEach((value,key)=>{
-        if(data[key]){
-          if(Array.isArray(data[key])) data[key].push(value);
-          else data[key] = [data[key], value];
+    showStep(0);
+
+    prevBtn.addEventListener('click', ()=>{
+      showStep(index-1);
+    });
+
+    nextBtn.addEventListener('click', async ()=>{
+      // If not final step, simply advance (no required validation except name/email on submit)
+      if (index < TOTAL_STEPS-1){
+        showStep(index+1);
+        // small save hint
+        showToast('Saved locally — you can continue later.');
+        saveToSession(); // persist
+        return;
+      }
+
+      // Final step -> submit
+      const name = form.querySelector('[name="name"]').value.trim();
+      const email = form.querySelector('[name="email"]').value.trim();
+      // validate required
+      if (!name || !validateEmail(email)){
+        showToast('Please enter a valid name and email to continue.');
+        showStep(0);
+        return;
+      }
+
+      nextBtn.disabled = true;
+      nextBtn.textContent = 'Submitting...';
+      statusMsg.textContent = 'Submitting…';
+
+      const payload = gatherFormDataObject(form);
+
+      // Try JSON POST first, then x-www-form-urlencoded, then no-cors fallback.
+      try{
+        const res = await submitJSON(WEBHOOK_URL, payload);
+        if (res && res.ok){
+          onSubmitSuccess();
+          return;
         } else {
-          data[key]=value;
+          // attempt form-encoded
+          const res2 = await submitFormUrlEncoded(WEBHOOK_URL, payload);
+          if (res2 && res2.ok){
+            onSubmitSuccess();
+            return;
+          } else {
+            // fallback to no-cors attempt (may still reach Make but we can't read response)
+            const res3 = await submitNoCorsFallback(WEBHOOK_URL, payload);
+            if (res3){
+              // we can't inspect response due to no-cors, but post likely sent
+              onSubmitSuccess(true);
+              return;
+            } else {
+              throw new Error('All submit attempts failed');
+            }
+          }
         }
-      });
+      }catch(err){
+        console.error('Submit error (safe):', err && err.message ? err.message : err);
+        showToast('Submission failed — retrying or try again later.');
+        statusMsg.textContent = 'Submission failed — please retry';
+        nextBtn.disabled = false;
+        nextBtn.textContent = 'Submit';
+      }
+    });
 
-      fetch("https://hook.us2.make.com/t6klvz5sg4pq12hysqs7xbbdhhtz5rxt", {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify(data)
-      }).then(()=>{
-        form.style.display="none";
-        successScreen.classList.add("active");
-      }).catch(()=>{
-        alert("Error submitting. Please try again.");
-      });
+    overlayClose.addEventListener('click', ()=>{
+      overlay.classList.remove('active');
+    });
+    overlayRestart.addEventListener('click', ()=>{
+      sessionStorage.removeItem('hc_form_save_v1');
+      location.reload();
+    });
+
+    // prevent Enter from submitting accidentally (except in textarea)
+    form.addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA'){
+        e.preventDefault();
+      }
+    });
+
+    // save partial to session storage on change (throttled)
+    let saveTimer;
+    form.addEventListener('input', ()=>{
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveToSession, 700);
+    });
+
+    // restore if saved
+    restoreFromSession();
+
+    // helpers
+    function validateEmail(email){
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
+
+    function gatherFormDataObject(formEl){
+      // Produces an object where keys with multiple entries become arrays
+      const fd = new FormData(formEl);
+      const obj = {};
+      for (const [key, value] of fd.entries()){
+        if (obj.hasOwnProperty(key)){
+          if (Array.isArray(obj[key])) obj[key].push(value);
+          else obj[key] = [obj[key], value];
+        } else {
+          obj[key] = value;
+        }
+      }
+      // Add meta
+      obj.source = 'healthcare-courier-assessment';
+      obj.timestamp = new Date().toISOString();
+      return obj;
+    }
+
+    function saveToSession(){
+      try{
+        const smallState = gatherFormDataObject(form);
+        sessionStorage.setItem('hc_form_save_v1', JSON.stringify(smallState));
+        // small visual save indicator
+        const t = $('#saveHint');
+        t.textContent = 'Saved locally';
+        setTimeout(()=> t.textContent = 'All fields optional except name & email', 1100);
+      }catch(e){}
+    }
+
+    function restoreFromSession(){
+      try{
+        const raw = sessionStorage.getItem('hc_form_save_v1');
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        // populate simple fields and array fields
+        for (const [k,v] of Object.entries(data)){
+          if (k === 'source' || k === 'timestamp') continue;
+          const els = form.querySelectorAll(`[name="${k}"]`);
+          if (!els || els.length === 0) continue;
+          // single element
+          if (els.length === 1){
+            const el = els[0];
+            if (el.type === 'checkbox' || el.type === 'radio'){
+              el.checked = Array.isArray(v) ? v.includes(el.value) : (v === el.value);
+            } else {
+              el.value = v ?? '';
+            }
+          } else {
+            // multiple inputs (checkbox group) — v may be array or single
+            const arr = Array.isArray(v) ? v : [v];
+            els.forEach(e => e.checked = arr.includes(e.value));
+          }
+        }
+        showToast('Loaded saved responses');
+      }catch(e){}
+    }
+
+    // SUBMIT helpers with fallbacks
+    async function submitJSON(url, data){
+      try{
+        return await fetch(url, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(data),
+          credentials: 'omit',
+          keepalive: true
+        });
+      }catch(err){
+        return null;
+      }
+    }
+
+    async function submitFormUrlEncoded(url, data){
+      try{
+        const params = new URLSearchParams();
+        // flatten object (arrays -> repeated keys)
+        Object.entries(data).forEach(([k,v])=>{
+          if (Array.isArray(v)) v.forEach(item => params.append(k, item));
+          else if (v !== undefined && v !== null) params.append(k, String(v));
+        });
+        return await fetch(url, {
+          method: 'POST',
+          headers: {'Content-Type':'application/x-www-form-urlencoded'},
+          body: params.toString(),
+          credentials: 'omit',
+          keepalive: true
+        });
+      }catch(err){
+        return null;
+      }
+    }
+
+    async function submitNoCorsFallback(url, data){
+      try{
+        // Note: mode:no-cors prevents reading the response. This is last-resort fallback for strict CORS.
+        await fetch(url, {
+          method:'POST',
+          mode:'no-cors',
+          body: JSON.stringify(data),
+          keepalive: true
+        });
+        return true;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function onSubmitSuccess(noCorsFallback=false){
+      nextBtn.disabled = false;
+      nextBtn.textContent = 'Submitted';
+      statusMsg.textContent = 'Submitted';
+      sessionStorage.removeItem('hc_form_save_v1');
+      // show overlay / success
+      $('#successDetail').textContent = noCorsFallback
+        ? 'We sent your responses using a best-effort fallback. If you don’t get a confirmation, please contact support.'
+        : 'We received your assessment and will follow up within 1 business day.';
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden','false');
+      showToast('Submitted — thank you!');
+    }
+
+    // small console safety: disable PII logging accidentally (light touch)
+    (function guardConsole(){
+      const orig = console.log;
+      console.log = function(){ /* no-op to avoid accidental PII logging in production */ };
+      // remove guard in dev if you need to debug by uncommenting next line
+      // console.log = orig;
+    })();
+  });
   </script>
 </body>
 </html>
