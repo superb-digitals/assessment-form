@@ -150,13 +150,54 @@
   .toast{ background:var(--brand); color:#fff; padding:10px 14px; border-radius:8px; box-shadow:0 6px 18px rgba(2,6,23,0.12) }
 
   /* responsive */
-  @media (max-width:880px){
-    .header{ padding:18px; flex-direction:column; gap:10px; align-items:flex-start }
-    .main{ padding:18px 18px 120px }
-    .section-head h2{ font-size:16px }
-    .overlay{ padding:16px }
-    .footer{ flex-direction:column; gap:10px; align-items:stretch }
+@media (max-width:880px){
+  .header{
+    padding:18px;
+    flex-direction:column;
+    gap:10px;
+    align-items:flex-start;
   }
+
+  .main{
+    padding:18px 18px 120px;
+  }
+
+  .section-head h2{
+    font-size:16px;
+  }
+
+  .overlay{
+    padding:16px;
+  }
+
+  /* Keep footer horizontal on small screens so Prev is left and Next is right */
+  .footer{
+    flex-direction:row;                /* keep items in a row */
+    gap:10px;
+    align-items:center;
+    justify-content:space-between;    /* push prev left and next right */
+    padding:12px;
+  }
+
+  /* Ensure the left block (prev + status) uses available space */
+  .actions-left{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex:1;                            /* take remaining space so Next stays right */
+  }
+
+  /* Hide the status text on very narrow screens to save space (optional) */
+  .actions-left .small-muted{
+    display:none;
+  }
+
+  /* Make sure the right-side wrapper containing Next button doesn't stretch */
+  .footer > div:last-child{
+    flex:0 0 auto;
+  }
+}
+
 
   /* Align Previous left & Next right */
 .buttons {
@@ -829,4 +870,5 @@
   </script>
 </body>
 </html>
+
 
