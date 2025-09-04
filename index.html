@@ -840,16 +840,24 @@
       if (inp.checked) inp.closest('.pill')?.classList.add('active');
     });
 
+// auto-fill name and email from query parameters
+const params = new URLSearchParams(window.location.search);
+const prefillName = params.get("name");
+const prefillEmail = params.get("email");
+
+if (prefillName) {
+  const nameField = document.querySelector('[name="name"]');
+  if (nameField) nameField.value = decodeURIComponent(prefillName.replace(/\+/g, " "));
+}
+
+if (prefillEmail) {
+  const emailField = document.querySelector('[name="email"]');
+  if (emailField) emailField.value = decodeURIComponent(prefillEmail.replace(/\+/g, " "));
+}
+
   }); // DOMContentLoaded
 
   (function guardConsole(){ const o = console.log; console.log = function(){}; })();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
