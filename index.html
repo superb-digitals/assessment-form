@@ -941,10 +941,36 @@ function wireOptionCards(){
   }); // DOMContentLoaded
 
   (function guardConsole(){ const o = console.log; console.log = function(){}; })();
+
+
+
+
+   opt.addEventListener('click', e => {
+  const inp = opt.querySelector('input');
+  if (!inp) return;
+
+  // prevent label click firing twice
+  if (e.target.tagName.toLowerCase() === 'label') return;
+
+  if (inp.type === 'checkbox') {
+    inp.checked = !inp.checked;
+    opt.classList.toggle('active', inp.checked);
+  } else if (inp.type === 'radio') {
+    const name = inp.name;
+    document.querySelectorAll('input[type="radio"][name="'+name+'"]').forEach(r=>{
+      r.checked = false;
+      r.closest('.option')?.classList.remove('active');
+    });
+    inp.checked = true;
+    opt.classList.add('active');
+  }
+});
+
 </script>
 
 </body>
 </html>
+
 
 
 
