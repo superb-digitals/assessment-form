@@ -692,23 +692,29 @@
   }
 
   // option-card behavior
-function wireOptionCards(){
-  document.querySelectorAll('.option').forEach(opt=>{
-    opt.addEventListener('click', e=>{
-      const inp = opt.querySelector('input');
-      if (!inp) return;
-      if (inp.type === 'checkbox') {
-        inp.checked = !inp.checked;
+function wireOptionCards() {
+  document.querySelectorAll('.options .option').forEach(opt => {
+    const inp = opt.querySelector('input');
+    if (!inp) return;
+
+    // Update active state initially
+    if (inp.checked) opt.classList.add('active');
+
+    // When user clicks anywhere on option
+    opt.addEventListener('click', e => {
+      // Let the input toggle normally (don’t override checked)
+      setTimeout(() => {
+        if (inp.type === 'radio') {
+          // clear siblings
+          document.querySelectorAll(
+            'input[type="radio"][name="'+inp.name+'"]'
+          ).forEach(r=>{
+            r.closest('.option')?.classList.remove('active');
+          });
+        }
+        // Sync this option’s active state
         opt.classList.toggle('active', inp.checked);
-      } else if (inp.type === 'radio') {
-        const name = inp.name;
-        document.querySelectorAll('input[type="radio"][name="'+name+'"]').forEach(r=>{
-          r.checked = false;
-          r.closest('.option')?.classList.remove('active');
-        });
-        inp.checked = true;
-        opt.classList.add('active');
-      }
+      }, 0);
     });
   });
 }
@@ -946,6 +952,7 @@ function wireOptionCards(){
 
 </body>
 </html>
+
 
 
 
