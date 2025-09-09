@@ -409,14 +409,21 @@
     </div>
   </div>
 
-  <div class="field">
-    <label class="field-label">Scheduled routes, on-demand/STAT, or both?</label>
-    <div class="options" role="group" aria-label="Service types">
-      <div class="option"><input type="checkbox" id="svc1" name="serviceTypes" value="Scheduled routes"/><label for="svc1">Scheduled routes</label></div>
-      <div class="option"><input type="checkbox" id="svc2" name="serviceTypes" value="On-demand/STAT"/><label for="svc2">On-demand / STAT</label></div>
-      <div class="option"><input type="checkbox" id="svc3" name="serviceTypes" value="Both"/><label for="svc3">Both</label></div>
-    </div>
-  </div>
+ <div class="options">
+  <label class="option">
+    <input type="checkbox" name="serviceTypes" value="Scheduled routes">
+    <span>Scheduled routes</span>
+  </label>
+  <label class="option">
+    <input type="checkbox" name="serviceTypes" value="On-demand/STAT">
+    <span>On-demand / STAT</span>
+  </label>
+  <label class="option">
+    <input type="checkbox" name="serviceTypes" value="Both">
+    <span>Both</span>
+  </label>
+</div>
+
 
   <div class="field">
     <label class="field-label">Geographic coverage</label>
@@ -938,6 +945,7 @@ function wireOptionCards(){
 
 </body>
 </html>
+
 
 
 
