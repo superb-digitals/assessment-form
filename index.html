@@ -319,14 +319,14 @@
       </div>
 
       <form id="assessmentForm" autocomplete="on" novalidate>
-       <!-- STEP 1 -->
+<!-- STEP 1 -->
 <section class="step active" data-step="1" aria-label="General Company Profile">
   <div class="section-head">
     <div class="icon" aria-hidden="true">
       <!-- truck icon -->
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-        <path d="M3 13h11v6H3zM16 15h3l2-3v-4h-5v7zM5 7h8v6H5z" 
-              stroke="currentColor" stroke-width="1.2" 
+        <path d="M3 13h11v6H3zM16 15h3l2-3v-4h-5v7zM5 7h8v6H5z"
+              stroke="currentColor" stroke-width="1.2"
               stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
@@ -334,36 +334,24 @@
   </div>
 
   <div class="field">
-    <label class="field-label" for="name">Full name <span style="color:red">*</span></label>
-    <input id="name" name="name" type="text" placeholder="Jane Doe" required />
+    <label class="field-label" for="name">Full name</label>
+    <input id="name" name="name" type="text" placeholder="Jane Doe" />
   </div>
 
   <div class="field">
-    <label class="field-label" for="email">Email (same appointment email) <span style="color:red">*</span></label>
+    <label class="field-label" for="email">Email (same appointment email)</label>
     <div class="input-wrap">
-      <input id="email" name="email" type="email" placeholder="name@company.com" required />
+      <input id="email" name="email" type="email" placeholder="name@company.com" />
       <div class="input-icon" aria-hidden="true">
         <!-- mail icon -->
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M3 8l9 6 9-6" stroke="currentColor" stroke-width="1.4"
                 stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="3" y="5" width="18" height="14" rx="2" 
+          <rect x="3" y="5" width="18" height="14" rx="2"
                 stroke="currentColor" stroke-width="1.2"/>
         </svg>
       </div>
     </div>
-  </div>
-
-  <!-- NEW: Company Name -->
-  <div class="field">
-    <label class="field-label" for="company">Company name <span style="color:red">*</span></label>
-    <input id="company" name="company" type="text" placeholder="ABC Healthcare Inc." required />
-  </div>
-
-  <!-- NEW: Job Title -->
-  <div class="field">
-    <label class="field-label" for="jobTitle">Job title <span style="color:red">*</span></label>
-    <input id="jobTitle" name="jobTitle" type="text" placeholder="Operations Manager" required />
   </div>
 
   <div class="field">
@@ -379,14 +367,14 @@
   <div class="field">
     <label class="field-label" for="volumes">Average daily/weekly/monthly delivery volumes expected</label>
     <div class="input-wrap">
-      <input id="volumes" name="volumes" type="text" placeholder="e.g., 50 per day or 200 per month" />
+      <input id="volumes" name="volumes" type="text" placeholder="e.g., 25 (per day) or 500 (per month)" />
       <div class="input-icon" aria-hidden="true">
         <!-- chart icon -->
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M3 3v18h18" stroke="currentColor" stroke-width="1.2"
                 stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M7 13v5M12 8v10M17 5v13" stroke="currentColor" stroke-width="1.6"
-                stroke-linecap="round"/>
+          <path d="M7 13v5M12 8v10M17 5v13"
+                stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
@@ -396,7 +384,12 @@
 <!-- STEP 2 -->
 <section class="step" data-step="2" aria-label="Service Expectations">
   <div class="section-head">
-    <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M6 8h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2v6M6 8h12" stroke="currentColor" stroke-width="1.2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <h2>Service Expectations</h2>
   </div>
 
@@ -409,34 +402,27 @@
     </div>
   </div>
 
- <div class="options">
-  <label class="option">
-    <input type="checkbox" name="serviceTypes" value="Scheduled routes">
-    <span>Scheduled routes</span>
-  </label>
-  <label class="option">
-    <input type="checkbox" name="serviceTypes" value="On-demand/STAT">
-    <span>On-demand / STAT</span>
-  </label>
-  <label class="option">
-    <input type="checkbox" name="serviceTypes" value="Both">
-    <span>Both</span>
-  </label>
-</div>
-
+  <div class="field">
+    <label class="field-label">Scheduled routes, on-demand/STAT, or both?</label>
+    <div class="options" role="group" aria-label="Service types">
+      <label class="option"><input type="checkbox" name="serviceTypes" value="Scheduled routes"/><span>Scheduled routes</span></label>
+      <label class="option"><input type="checkbox" name="serviceTypes" value="On-demand/STAT"/><span>On-demand / STAT</span></label>
+      <label class="option"><input type="checkbox" name="serviceTypes" value="Both"/><span>Both</span></label>
+    </div>
+  </div>
 
   <div class="field">
     <label class="field-label">Geographic coverage</label>
     <div class="options" role="group" aria-label="Geography">
-      <div class="option"><input type="checkbox" id="geo1" name="geography" value="Local"/><label for="geo1">Local</label></div>
-      <div class="option"><input type="checkbox" id="geo2" name="geography" value="Statewide"/><label for="geo2">Statewide</label></div>
-      <div class="option"><input type="checkbox" id="geo3" name="geography" value="Multi-state"/><label for="geo3">Multi-state</label></div>
+      <label class="option"><input type="checkbox" name="geography" value="Local"/><span>Local</span></label>
+      <label class="option"><input type="checkbox" name="geography" value="Statewide"/><span>Statewide</span></label>
+      <label class="option"><input type="checkbox" name="geography" value="Multi-state"/><span>Multi-state</span></label>
     </div>
   </div>
 
   <div class="field">
     <label class="field-label">24/7/365 availability (incl. weekends/holidays)?</label>
-    <div class="pills" role="radiogroup" aria-label="24/7 availability" id="pills_avail">
+    <div class="pills" role="radiogroup" aria-label="24/7 availability">
       <label class="pill"><input type="radio" name="availability247" value="Yes"/><span>Yes</span></label>
       <label class="pill"><input type="radio" name="availability247" value="No"/><span>No</span></label>
     </div>
@@ -446,7 +432,12 @@
 <!-- STEP 3 -->
 <section class="step" data-step="3" aria-label="Compliance & Regulatory">
   <div class="section-head">
-    <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M5 22h14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2v6M5 22h14" stroke="currentColor" stroke-width="1.2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <h2>Compliance & Regulatory Requirements</h2>
   </div>
 
@@ -470,10 +461,10 @@
   <div class="field">
     <label class="field-label">Required documentation / permits</label>
     <div class="options" role="group">
-      <div class="option"><input type="checkbox" id="doc1" name="documentation" value="HIPAA"/><label for="doc1">HIPAA</label></div>
-      <div class="option"><input type="checkbox" id="doc2" name="documentation" value="DOT"/><label for="doc2">DOT</label></div>
-      <div class="option"><input type="checkbox" id="doc3" name="documentation" value="OSHA"/><label for="doc3">OSHA</label></div>
-      <div class="option"><input type="checkbox" id="doc4" name="documentation" value="DEA chain-of-custody"/><label for="doc4">DEA chain-of-custody</label></div>
+      <label class="option"><input type="checkbox" name="documentation" value="HIPAA"/><span>HIPAA</span></label>
+      <label class="option"><input type="checkbox" name="documentation" value="DOT"/><span>DOT</span></label>
+      <label class="option"><input type="checkbox" name="documentation" value="OSHA"/><span>OSHA</span></label>
+      <label class="option"><input type="checkbox" name="documentation" value="DEA chain-of-custody"/><span>DEA chain-of-custody</span></label>
     </div>
     <textarea name="documentationOther" placeholder="Other documentation / notes (optional)"></textarea>
   </div>
@@ -487,7 +478,39 @@
   </div>
 </section>
 
-<!-- STEP 5 -->
+        <!-- STEP 4 -->
+<section class="step" data-step="4" aria-label="Packaging & Handling">
+  <div class="section-head">
+    <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7h18v10H3zM3 7l9 6 9-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h2>Packaging & Handling</h2>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Packaging / labels — who provides?</label>
+    <select name="packagingSource">
+      <option value="">(choose)</option>
+      <option>Company provides</option>
+      <option>Courier supplies</option>
+      <option>Both</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Chain-of-custody protocols at pickup/delivery</label>
+    <textarea name="chainOfCustody" placeholder="Describe chain-of-custody protocols (optional)"></textarea>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Hazardous materials / specialty handling?</label>
+    <div class="pills" role="radiogroup">
+      <label class="pill"><input type="radio" name="specialHandling" value="Yes"> Yes</label>
+      <label class="pill"><input type="radio" name="specialHandling" value="No"> No</label>
+    </div>
+    <textarea name="specialHandlingDetails" placeholder="If yes, explain (optional)"></textarea>
+  </div>
+</section>
+
+        <!-- STEP 5 -->
 <section class="step" data-step="5" aria-label="Technology & Tracking">
   <div class="section-head">
     <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -497,17 +520,17 @@
   <div class="field">
     <label class="field-label">Level of visibility required</label>
     <div class="options">
-      <div class="option"><input type="checkbox" id="vis1" name="visibility" value="GPS tracking"/><label for="vis1">GPS tracking</label></div>
-      <div class="option"><input type="checkbox" id="vis2" name="visibility" value="Proof of Delivery"/><label for="vis2">Proof of Delivery</label></div>
-      <div class="option"><input type="checkbox" id="vis3" name="visibility" value="Client portal"/><label for="vis3">Client portal</label></div>
+      <label class="option"><input type="checkbox" name="visibility" value="GPS tracking"> GPS tracking</label>
+      <label class="option"><input type="checkbox" name="visibility" value="Proof of Delivery"> Proof of Delivery</label>
+      <label class="option"><input type="checkbox" name="visibility" value="Client portal"> Client portal</label>
     </div>
   </div>
 
   <div class="field">
     <label class="field-label">Integration with pharmacy management / EHR?</label>
     <div class="pills" role="radiogroup">
-      <label class="pill"><input type="radio" name="ehrIntegration" value="Yes"/><span>Yes</span></label>
-      <label class="pill"><input type="radio" name="ehrIntegration" value="No"/><span>No</span></label>
+      <label class="pill"><input type="radio" name="ehrIntegration" value="Yes"> Yes</label>
+      <label class="pill"><input type="radio" name="ehrIntegration" value="No"> No</label>
     </div>
     <input type="text" name="ehrSystem" placeholder="If yes, specify system (optional)" />
   </div>
@@ -515,15 +538,15 @@
   <div class="field">
     <label class="field-label">Confirmations required</label>
     <div class="options">
-      <div class="option"><input type="checkbox" id="conf1" name="confirmations" value="E-signatures"/><label for="conf1">E-signatures</label></div>
-      <div class="option"><input type="checkbox" id="conf2" name="confirmations" value="Timestamps"/><label for="conf2">Timestamps</label></div>
-      <div class="option"><input type="checkbox" id="conf3" name="confirmations" value="Temperature logs"/><label for="conf3">Temperature logs</label></div>
-      <div class="option"><input type="checkbox" id="conf4" name="confirmations" value="Photo verification"/><label for="conf4">Photo verification</label></div>
+      <label class="option"><input type="checkbox" name="confirmations" value="E-signatures"> E-signatures</label>
+      <label class="option"><input type="checkbox" name="confirmations" value="Timestamps"> Timestamps</label>
+      <label class="option"><input type="checkbox" name="confirmations" value="Temperature logs"> Temperature logs</label>
+      <label class="option"><input type="checkbox" name="confirmations" value="Photo verification"> Photo verification</label>
     </div>
   </div>
 </section>
 
-<!-- STEP 6 -->
+        <!-- STEP 6 -->
 <section class="step" data-step="6" aria-label="Security & Risk Management">
   <div class="section-head">
     <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l7 4v6c0 5-7 10-7 10s-7-5-7-10V6l7-4z" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -533,9 +556,9 @@
   <div class="field">
     <label class="field-label">Security materials required</label>
     <div class="options">
-      <div class="option"><input type="checkbox" id="sec1" name="securityMaterials" value="Tamper-evident seals"/><label for="sec1">Tamper-evident seals</label></div>
-      <div class="option"><input type="checkbox" id="sec2" name="securityMaterials" value="Locked bags"/><label for="sec2">Locked bags</label></div>
-      <div class="option"><input type="checkbox" id="sec3" name="securityMaterials" value="Secure vault storage"/><label for="sec3">Secure vault storage</label></div>
+      <label class="option"><input type="checkbox" name="securityMaterials" value="Tamper-evident seals"> Tamper-evident seals</label>
+      <label class="option"><input type="checkbox" name="securityMaterials" value="Locked bags"> Locked bags</label>
+      <label class="option"><input type="checkbox" name="securityMaterials" value="Secure vault storage"> Secure vault storage</label>
     </div>
   </div>
 
@@ -550,28 +573,33 @@
   </div>
 </section>
 
-<!-- STEP 7 -->
+      <!-- STEP 7 -->
 <section class="step" data-step="7" aria-label="Communication & Relationship">
   <div class="section-head">
-    <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a1 1 0 0 1-1 1H6l-5 3V6a1 1 0 0 1 1-1h16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M21 15v4a1 1 0 0 1-1 1H6l-5 3V6a1 1 0 0 1 1-1h16"
+              stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <h2>Communication & Relationship</h2>
   </div>
 
   <div class="field">
     <label class="field-label">Preferred method of communication</label>
     <div class="options">
-      <div class="option"><input type="checkbox" id="comm1" name="preferredCommunication" value="Dispatch line"/><label for="comm1">Dispatch line</label></div>
-      <div class="option"><input type="checkbox" id="comm2" name="preferredCommunication" value="Email"/><label for="comm2">Email</label></div>
-      <div class="option"><input type="checkbox" id="comm3" name="preferredCommunication" value="Portal alerts"/><label for="comm3">Portal alerts</label></div>
-      <div class="option"><input type="checkbox" id="comm4" name="preferredCommunication" value="SMS"/><label for="comm4">SMS</label></div>
+      <label class="option"><input type="checkbox" name="preferredCommunication" value="Dispatch line"> Dispatch line</label>
+      <label class="option"><input type="checkbox" name="preferredCommunication" value="Email"> Email</label>
+      <label class="option"><input type="checkbox" name="preferredCommunication" value="Portal alerts"> Portal alerts</label>
+      <label class="option"><input type="checkbox" name="preferredCommunication" value="SMS"> SMS</label>
     </div>
   </div>
 
   <div class="field">
     <label class="field-label">Require a dedicated account manager?</label>
     <div class="pills">
-      <label class="pill"><input type="radio" name="dedicatedManager" value="Yes"/><span>Yes</span></label>
-      <label class="pill"><input type="radio" name="dedicatedManager" value="No"/><span>No</span></label>
+      <label class="pill"><input type="radio" name="dedicatedManager" value="Yes"> Yes</label>
+      <label class="pill"><input type="radio" name="dedicatedManager" value="No"> No</label>
     </div>
   </div>
 
@@ -587,10 +615,15 @@
   </div>
 </section>
 
-<!-- STEP 8 -->
+        <!-- STEP 8 -->
 <section class="step" data-step="8" aria-label="Contract & Pricing">
   <div class="section-head">
-    <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M3 7h18" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2v20M3 7h18" stroke="currentColor" stroke-width="1.2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <h2>Contract & Pricing</h2>
   </div>
 
@@ -608,8 +641,8 @@
   <div class="field">
     <label class="field-label">Seasonal fluctuations / surge periods?</label>
     <div class="pills">
-      <label class="pill"><input type="radio" name="seasonalSurge" value="Yes"/><span>Yes</span></label>
-      <label class="pill"><input type="radio" name="seasonalSurge" value="No"/><span>No</span></label>
+      <label class="pill"><input type="radio" name="seasonalSurge" value="Yes"> Yes</label>
+      <label class="pill"><input type="radio" name="seasonalSurge" value="No"> No</label>
     </div>
     <textarea name="seasonalSurgeDetails" placeholder="If yes, explain (optional)"></textarea>
   </div>
@@ -617,12 +650,13 @@
   <div class="field">
     <label class="field-label">KPIs that matter most</label>
     <div class="options">
-      <div class="option"><input type="checkbox" id="kpi1" name="kpis" value="On-time %"/><label for="kpi1">On-time %</label></div>
-      <div class="option"><input type="checkbox" id="kpi2" name="kpis" value="Temperature compliance"/><label for="kpi2">Temperature compliance</label></div>
-      <div class="option"><input type="checkbox" id="kpi3" name="kpis" value="Accuracy rate"/><label for="kpi3">Accuracy rate</label></div>
+      <label class="option"><input type="checkbox" name="kpis" value="On-time %"> On-time %</label>
+      <label class="option"><input type="checkbox" name="kpis" value="Temperature compliance"> Temperature compliance</label>
+      <label class="option"><input type="checkbox" name="kpis" value="Accuracy rate"> Accuracy rate</label>
     </div>
   </div>
 </section>
+
 
         <!-- Footer actions -->
         <div class="footer" role="region" aria-label="Form navigation">
@@ -952,6 +986,7 @@ function wireOptionCards() {
 
 </body>
 </html>
+
 
 
 
